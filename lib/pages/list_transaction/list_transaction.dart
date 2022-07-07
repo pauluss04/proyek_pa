@@ -46,11 +46,12 @@ class TransactionListState extends State<TransactionList> {
       if (json != null) {
         if (json['status'] == 'success') {
           setState(() {
-            tempData = json['data']['data']['data'];
+            tempData = json['data']['data'];
           });
         }
       }
     }).catchError((e) {
+      print("string");
       print(e.toString());
       alertError(e.toString(), 1);
     });
@@ -83,7 +84,8 @@ class TransactionListState extends State<TransactionList> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF2C3246),
-        title: Text("Daftar Transaksi", style: GoogleFonts.nunito(fontSize: 25)),
+        title:
+            Text("Daftar Transaksi", style: GoogleFonts.nunito(fontSize: 25)),
       ),
       body: SafeArea(
         bottom: false,
@@ -185,15 +187,13 @@ class TransactionListState extends State<TransactionList> {
                                                                   .length >
                                                               0
                                                           ? tempData[i]['data_cart']
-                                                                          [
-                                                                          'data'][j]
-                                                                      [
-                                                                      'item_detail']
+                                                                      ['data'][j]
                                                                   [
-                                                                  'image']['path']
+                                                                  'item_detail']
+                                                              ['image']['path']
                                                           : 'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
-                                                      width: 50,
-                                                      height: 50),
+                                                      width: 80,
+                                                      height: 80),
                                                   const SizedBox(
                                                     width: 10,
                                                   ),
@@ -215,7 +215,8 @@ class TransactionListState extends State<TransactionList> {
                                                               tempData[i]['data_cart']
                                                                           [
                                                                           'data'][j]
-                                                                      ['volume'],
+                                                                      ['volume']
+                                                                  .toString(),
                                                               style: GoogleFonts
                                                                   .nunito()),
                                                           Text(
@@ -224,7 +225,8 @@ class TransactionListState extends State<TransactionList> {
                                                                               [
                                                                               j]
                                                                           [
-                                                                          'price'],
+                                                                          'price']
+                                                                      .toString(),
                                                               style: GoogleFonts
                                                                   .nunito()),
                                                         ],
@@ -243,7 +245,8 @@ class TransactionListState extends State<TransactionList> {
                                               child: Text(
                                                   "Rp " +
                                                       tempData[i]['data_cart']
-                                                              ['total'],
+                                                              ['total']
+                                                          .toString(),
                                                   textAlign: TextAlign.right,
                                                   style: GoogleFonts.nunito()))
                                         ],
@@ -255,20 +258,22 @@ class TransactionListState extends State<TransactionList> {
                                         children: [
                                           Expanded(
                                             flex: 1,
-                                            child: RaisedButton(
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                elevation: 5,
+                                                primary: Color(0xFF2C3246),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                              ),
                                               onPressed: () {
                                                 uploadProof(i);
                                               },
                                               child: Text('Cara Pembayaran',
                                                   style: GoogleFonts.nunito(
                                                       fontSize: 15)),
-                                              color: Colors.blue,
-                                              textColor: Colors.white,
-                                              elevation: 5,
+                                             
                                             ),
                                           )
                                         ],

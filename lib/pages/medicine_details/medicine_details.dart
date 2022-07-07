@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herbal/api/api_services.dart';
+import 'package:herbal/pages/auth/authlogin.dart';
 import 'package:herbal/pages/list_cart/list_cart.dart';
 import 'package:herbal/shared/shared.dart';
 import 'package:herbal/widgets/loading.dart';
@@ -101,11 +103,13 @@ class MedicineDetailsState extends State<MedicineDetails> {
           initiateData();
           // getItem();
         } else {
+          print(json.toString());
           alertError(json.toString(), 1);
         }
       }
     }).catchError((e) {
-      alertError(e.toString(), 1);
+      print(json.toString());
+      alertNotLogin();
     });
   }
 
@@ -188,12 +192,50 @@ class MedicineDetailsState extends State<MedicineDetails> {
         .show();
   }
 
+  alertNotLogin() {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.ERROR,
+      animType: AnimType.SCALE,
+      headerAnimationLoop: false,
+      title: 'Kesalahan',
+      desc: "Anda Belum Login. Silahkan Login terlebih dahulu",
+      btnOkOnPress: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AuthLoginPage()));
+      },
+      btnOkIcon: Icons.cancel,
+      btnOkColor: Colors.red)
+  .show();
+  }
+
   @override
   Widget build(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height - 25;
     windowWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          actions: [
+            IconButton(
+              iconSize: 30,
+              icon: const Icon(Icons.share),
+              onPressed: () {
+                // share();
+                setState(() async {
+                  await FlutterShare.share(
+                      title: dataIdCart[0]['detail'][idx]['name'].toString(),
+                      text:"\n\n"+dataIdCart[0]['detail'][idx]['description'].toString() +
+                          "\n \n Untuk lebih lengkapnya bisa download aplikasi BSK Media App di link ",
+                      linkUrl: 'https://bit.ly/3njyXRj',
+                      chooserTitle: 'BSK Media App');
+                });
+              },
+            ),
+            SizedBox(width: 3,)
+          ],
             backgroundColor: Color(0xFF2C3246),
             title:
                 Text("Detail Obat", style: GoogleFonts.nunito(fontSize: 25))),
@@ -273,145 +315,146 @@ class MedicineDetailsState extends State<MedicineDetails> {
             ))),
         body: SafeArea(
           bottom: false,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                // ignore: sized_box_for_whitespace
-                Container(
-                    height: windowHeight,
-                    child: Column(children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        margin: EdgeInsets.all(10),
-                        child: ExpansionPanelList(
-                          expansionCallback: (panelIndex, isExpanded) {
-                            active = !active;
-                            if (exTitle == "Sport Categories")
-                              exTitle = "Contract";
-                            else
-                              exTitle = "Sport Categories";
-                            setState(() {});
-                          },
-                          children: <ExpansionPanel>[
-                            ExpansionPanel(
-                                headerBuilder: (context, isExpanded) {
-                                  return const ListTile(
-                                    visualDensity: VisualDensity.compact,
-                                    dense: true,
-                                    title: Text('Show Apotek'),
-                                  );
-                                },
-                                body: dataIdCart.isNotEmpty
-                                    ? Column(
-                                        children: [
-                                          for (var i = 0;
-                                              i <
-                                                  dataIdCart[0]['detail']
-                                                      .length;
-                                              i++)
-                                            Container(
-                                                color: Colors.white,
-                                                alignment: Alignment.topCenter,
-                                                child: InkWell(
-                                                  highlightColor: Colors.blue,
-                                                  onTap: () {
-                                                    setIdx(i);
-                                                  },
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 5,
-                                                            left: 20,
-                                                            right: 20,
-                                                            bottom: 20),
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Container(
-                                                            child: Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child: Text(
-                                                                  dataIdCart
-                                                                          .isNotEmpty
-                                                                      ? dataIdCart[0]['detail'][i]['data_apotek']
-                                                                              [
-                                                                              'name']
-                                                                          .toString()
-                                                                      : "",
-                                                                  style: GoogleFonts
-                                                                      .nunito(
-                                                                          fontSize:
-                                                                              15)),
-                                                            ),
+          child: Stack(
+            children: <Widget>[
+              // ignore: sized_box_for_whitespace
+              Container(
+                  height: windowHeight,
+                  child: Column(children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.all(10),
+                      child: ExpansionPanelList(
+                        expansionCallback: (panelIndex, isExpanded) {
+                          active = !active;
+                          if (exTitle == "Sport Categories")
+                            exTitle = "Contract";
+                          else
+                            exTitle = "Sport Categories";
+                          setState(() {});
+                        },
+                        children: <ExpansionPanel>[
+                          ExpansionPanel(
+                              headerBuilder: (context, isExpanded) {
+                                return const ListTile(
+                                  visualDensity: VisualDensity.compact,
+                                  dense: true,
+                                  title: Text('Show Apotek'),
+                                );
+                              },
+                              body: dataIdCart.isNotEmpty
+                                  ? Column(
+                                      children: [
+                                        for (var i = 0;
+                                            i <
+                                                dataIdCart[0]['detail']
+                                                    .length;
+                                            i++)
+                                          Container(
+                                              color: Colors.white,
+                                              alignment: Alignment.topCenter,
+                                              child: InkWell(
+                                                highlightColor: Colors.blue,
+                                                onTap: () {
+                                                  setIdx(i);
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 5,
+                                                          left: 20,
+                                                          right: 20,
+                                                          bottom: 20),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          child: Align(
+                                                            alignment:
+                                                                Alignment
+                                                                    .center,
+                                                            child: Text(
+                                                                dataIdCart
+                                                                        .isNotEmpty
+                                                                    ? dataIdCart[0]['detail'][i]['data_apotek']
+                                                                            [
+                                                                            'name']
+                                                                        .toString()
+                                                                    : "",
+                                                                style: GoogleFonts
+                                                                    .nunito(
+                                                                        fontSize:
+                                                                            15)),
                                                           ),
                                                         ),
-                                                        Expanded(
-                                                          flex: 1,
-                                                          child: Container(
-                                                            child: Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child: Text(
-                                                                  dataIdCart
-                                                                          .isNotEmpty
-                                                                      ? dataIdCart[0]['detail'][i]['data_apotek']
-                                                                              [
-                                                                              'city']
-                                                                          .toString()
-                                                                      : "",
-                                                                  style: GoogleFonts
-                                                                      .nunito(
-                                                                          fontSize:
-                                                                              15)),
-                                                            ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          child: Align(
+                                                            alignment:
+                                                                Alignment
+                                                                    .center,
+                                                            child: Text(
+                                                                dataIdCart
+                                                                        .isNotEmpty
+                                                                    ? dataIdCart[0]['detail'][i]['data_apotek']
+                                                                            [
+                                                                            'city']
+                                                                        .toString()
+                                                                    : "",
+                                                                style: GoogleFonts
+                                                                    .nunito(
+                                                                        fontSize:
+                                                                            15)),
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                )),
-                                        ],
-                                      )
-                                    : Text(''),
-                                isExpanded: active,
-                                canTapOnHeader: true)
-                          ],
-                        ),
+                                                ),
+                                              )),
+                                      ],
+                                    )
+                                  : Text(''),
+                              isExpanded: active,
+                              canTapOnHeader: true)
+                        ],
                       ),
-                      Expanded(
-                          flex: 1,
-                          child: Container(
-                            child: Image.network(
-                                dataIdCart.isNotEmpty
-                                    ? dataIdCart[0]['detail'][idx]['image']
-                                            ['path']
-                                        .toString()
-                                    : 'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
-                                width: 200,
-                                height: 200),
-                          )),
-                      Expanded(
-                          flex: 2,
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: const BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    offset: Offset(0.0, 2.0),
-                                    blurRadius: 25.0,
-                                  )
-                                ],
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(32),
-                                    topRight: Radius.circular(32))),
-                            alignment: Alignment.topCenter,
-                            child: Column(
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                          child: Image.network(
+                              dataIdCart.isNotEmpty
+                                  ? dataIdCart[0]['detail'][idx]['image']
+                                          ['path']
+                                      .toString()
+                                  : 'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
+                              width: 200,
+                              height: 200),
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  offset: Offset(0.0, 2.0),
+                                  blurRadius: 25.0,
+                                )
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(32),
+                                  topRight: Radius.circular(32))),
+                          alignment: Alignment.topCenter,
+                          child: Expanded(
+                            flex: 1,
+                            child: ListView(
                               children: <Widget>[
                                 Padding(
                                     padding: const EdgeInsets.only(
@@ -443,7 +486,8 @@ class MedicineDetailsState extends State<MedicineDetails> {
                                           children: [
                                             FavoriteButton(
                                               iconSize: 50,
-                                              isFavorite: false,
+                                              isFavorite: dataIdCart[0]['detail'][idx]
+                                                        ['has_like'],
                                               valueChanged: (value) {
                                                 value = likeManagement(
                                                     dataIdCart[0]['detail'][idx]
@@ -474,7 +518,7 @@ class MedicineDetailsState extends State<MedicineDetails> {
                                                         .toString());
                                               }
                                             },
-                                            icon: Icon(Icons.location_on)),
+                                            icon: Icon(Icons.location_on, size:30)),
                                           ],
                                         ),
                                       ],
@@ -584,11 +628,11 @@ class MedicineDetailsState extends State<MedicineDetails> {
                                     )),
                               ],
                             ),
-                          )),
-                    ])),
-                Loading(isLoading)
-              ],
-            ),
+                          ),
+                        )),
+                  ])),
+              Loading(isLoading)
+            ],
           ),
         ));
   }

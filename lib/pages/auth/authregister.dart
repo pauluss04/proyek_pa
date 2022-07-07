@@ -91,6 +91,7 @@ class AuthRegisterState extends State<AuthRegisterPage> {
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
               child: Stack(
+            alignment: Alignment.center,
             children: [
               SizedBox(
                 width: double.infinity,
@@ -159,14 +160,14 @@ class AuthRegisterState extends State<AuthRegisterPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
+                                Text(
                                   'Nama Pengguna',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.nunito(fontSize: 22),
                                 ),
                                 TextField(
                                   controller: username,
-                                  style:  GoogleFonts.nunito(fontSize: 18),
+                                  style: GoogleFonts.nunito(fontSize: 18),
                                   keyboardType: TextInputType.text,
                                   textCapitalization: TextCapitalization.words,
                                   decoration: const InputDecoration(
@@ -181,14 +182,14 @@ class AuthRegisterState extends State<AuthRegisterPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
+                                Text(
                                   'Alamat',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.nunito(fontSize: 22),
                                 ),
                                 TextField(
                                   controller: address,
-                                  style:  GoogleFonts.nunito(fontSize: 18),
+                                  style: GoogleFonts.nunito(fontSize: 18),
                                   keyboardType: TextInputType.text,
                                   textCapitalization: TextCapitalization.words,
                                   decoration: const InputDecoration(
@@ -203,14 +204,14 @@ class AuthRegisterState extends State<AuthRegisterPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
+                                Text(
                                   'Email',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.nunito(fontSize: 22),
                                 ),
                                 TextField(
                                   controller: email,
-                                  style:  GoogleFonts.nunito(fontSize: 18),
+                                  style: GoogleFonts.nunito(fontSize: 18),
                                   keyboardType: TextInputType.emailAddress,
                                   textCapitalization: TextCapitalization.words,
                                   decoration: const InputDecoration(
@@ -226,14 +227,14 @@ class AuthRegisterState extends State<AuthRegisterPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                 Text(
+                                Text(
                                   'Nomor Telepon',
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.nunito(fontSize: 22),
                                 ),
                                 TextField(
                                   controller: noTelp,
-                                  style:  GoogleFonts.nunito(fontSize: 18),
+                                  style: GoogleFonts.nunito(fontSize: 18),
                                   keyboardType: TextInputType.number,
                                   textCapitalization: TextCapitalization.words,
                                   decoration: const InputDecoration(
@@ -256,7 +257,7 @@ class AuthRegisterState extends State<AuthRegisterPage> {
                                 ),
                                 TextField(
                                   controller: password,
-                                  style:  GoogleFonts.nunito(fontSize: 18),
+                                  style: GoogleFonts.nunito(fontSize: 18),
                                   keyboardType: TextInputType.text,
                                   textCapitalization: TextCapitalization.words,
                                   obscureText: hidePassword,

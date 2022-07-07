@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:favorite_button/favorite_button.dart';
@@ -79,7 +80,7 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
   }
 
   addLikeItem(id) async {
-    await ApiServices().addLikeItem(token, id.toString()).then((json) {
+    await ApiServices().addLikeRadio(token, id.toString()).then((json) {
       if (json != null) {
         if (json['status'] == 'success') {
           initiateData();
@@ -90,7 +91,8 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
         }
       }
     }).catchError((e) {
-      alertError(e.toString(), 1);
+      print(e.toString());
+      alertNotLogin();
     });
   }
 
@@ -107,6 +109,25 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
     }).catchError((e) {
       alertError(e.toString(), 1);
     });
+  }
+
+  alertNotLogin() {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.ERROR,
+      animType: AnimType.SCALE,
+      headerAnimationLoop: false,
+      title: 'Kesalahan',
+      desc: "Anda Belum Login. Silahkan Login terlebih dahulu",
+      btnOkOnPress: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AuthLoginPage()));
+      },
+      btnOkIcon: Icons.cancel,
+      btnOkColor: Colors.red)
+  .show();
   }
 
   alertError(String err, int error) {
@@ -131,7 +152,7 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
       isLoading = true;
     });
     final prefs = await SharedPreferences.getInstance();
-    
+
     token = prefs.getString('token').toString();
     if (prefs.getString('streamingRadio') != "") {
       pathUrl.add(jsonDecode(prefs.getString('streamingRadio')!));
@@ -141,10 +162,7 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
       setState(() {
         isPlaying = value;
       });
-      print(pathUrl[0]['link_stream']);
-      print(pathUrl[0]['name']);
     });
-    print(pathUrl);
     setState(() {
       isLoading = false;
     });
@@ -245,10 +263,11 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
                               setState(() async {
                                 await FlutterShare.share(
                                     title: pathUrl[0]['name'],
-                                    text: pathUrl[0]['channel'] +
-                                        "\n \n Untuk lebih lengkapnya bisa download apilikasi BSK Media di link ",
-                                    linkUrl: 'https://flutter.dev/',
-                                    chooserTitle: 'aaaaaa');
+                                    text: "\n\n" +
+                                        pathUrl[0]['channel'] +
+                                        "\n \n Untuk lebih lengkapnya bisa download apilikasi BSK Media App di link ",
+                                    linkUrl: 'https://bit.ly/3njyXRj',
+                                    chooserTitle: 'BSK Media App');
                               });
                             },
                           ),
@@ -272,13 +291,35 @@ class RadioDetailsPublicState extends State<RadioDetailsPublic> {
                           SizedBox(
                             width: windowWidth * 0.05,
                           ),
+                          // IconButton(
+                          //     onPressed: () {
+                          //       WidgetsBinding.instance
+                          //           ?.addPostFrameCallback((_) => setState(() {
+                          //                 likeManagement(pathUrl[0]['id'],
+                          //                     pathUrl[0]['has_like']);
+                          //               }));
+                          //     },
+                          //     icon: Icon(
+                          //       pathUrl[0]['has_like']
+                          //           ? Icons.favorite
+                          //           : Icons.favorite_border,
+                          //       color: pathUrl[0]['has_like']
+                          //           ? Colors.red
+                          //           : Colors.black,
+                          //     ),
+                          //     color: Colors.black,
+                          //   ),
                           FavoriteButton(
                             iconSize: 60,
-                            isFavorite: false,
+                            isFavorite: pathUrl[0]['has_like'],
                             valueChanged: (value) {
-                              value = likeManagement(
+                              setState(() {
+                                value = likeManagement(
                                   pathUrl[0]['id'], pathUrl[0]['has_like']);
-                              print('Is Favorite : $value');
+                              print(likeManagement(
+                                  pathUrl[0]['id'], pathUrl[0]['has_like']));
+                              });
+                              
                             },
                           )
                         ],

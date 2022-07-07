@@ -419,25 +419,25 @@ class NewsPaperListPublicState extends State<NewsPaperListPublic> {
                                               ),
                                             ),
                                           )),
-                                          Container(
-                                            alignment: Alignment.centerRight,
-                                            child: IconButton(
-                                              iconSize: 35,
-                                              onPressed: () {
-                                                likeManagement(
-                                                    tempData[index]['id'],
-                                                    tempData[index]['has_like']);
-                                              },
-                                              icon: Icon(
-                                                tempData[index]['has_like']
-                                                    ? Icons.favorite
-                                                    : Icons.favorite_outline,
-                                                color: tempData[index]['has_like']
-                                                    ? Colors.red
-                                                    : Color(0xFF2C3246),
-                                              ),
-                                            ),
-                                          ),
+                                          // Container(
+                                          //   alignment: Alignment.centerRight,
+                                          //   child: IconButton(
+                                          //     iconSize: 35,
+                                          //     onPressed: () {
+                                          //       likeManagement(
+                                          //           tempData[index]['id'],
+                                          //           tempData[index]['has_like']);
+                                          //     },
+                                          //     icon: Icon(
+                                          //       tempData[index]['has_like']
+                                          //           ? Icons.favorite
+                                          //           : Icons.favorite_outline,
+                                          //       color: tempData[index]['has_like']
+                                          //           ? Colors.red
+                                          //           : Color(0xFF2C3246),
+                                          //     ),
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                     )

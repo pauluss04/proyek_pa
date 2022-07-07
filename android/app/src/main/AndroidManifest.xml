@@ -2,7 +2,7 @@
     package="com.herbal">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Herbal"
+        android:label="BSK Media App"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity

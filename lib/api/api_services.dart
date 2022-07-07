@@ -520,7 +520,7 @@ class ApiServices {
           }).timeout(Duration(seconds: timeout));
           print(response.statusCode);
       if (response.statusCode == 200) {
-        var res = json.decode(response.body);
+        var res = json.decode(response.body) as Map<String, dynamic>;
         print(res);
         return res;
       } else {

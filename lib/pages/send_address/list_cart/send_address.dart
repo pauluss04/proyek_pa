@@ -76,11 +76,11 @@ class AddressSendState extends State<AddressSend> {
     final prefs = await SharedPreferences.getInstance();
     String cart_id = prefs.getString('idCart')!;
     await ApiServices()
-        .createTransaction(
-            token, cart_id.toString(), 'transfer', idAddress.toString())
+        .createTransaction(token, cart_id, 'transfer', idAddress.toString())
         .then((json) {
       if (json != null) {
         if (json['status'] == "success") {
+          print("sukses");
           Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) {
             return const TransactionList();
           }));
@@ -175,6 +175,7 @@ class AddressSendState extends State<AddressSend> {
           ),
         ),
         btnOk: DialogButton(
+          color: Color(0xFF2C3246),
           onPressed: () => {
             Navigator.pop(context),
             Navigator.push(
@@ -206,6 +207,49 @@ class AddressSendState extends State<AddressSend> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: Container(
+          height: 70,
+          margin: EdgeInsets.fromLTRB(15, 0, 15, 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Total', style: GoogleFonts.nunito(fontSize: 20)),
+                    Text('Rp ' + totalPrice.toString(),
+                        style: GoogleFonts.nunito(fontSize: 20))
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5,
+                    primary: Color(0xFF2C3246),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  onPressed: () {
+                    changeAddress
+                        ? createItem()
+                        : alertError('Anda belum pilih alamat!', 0);
+                  },
+                  child: Text('Bayar',
+                      style: GoogleFonts.nunito(
+                        fontSize: 15,
+                        color: Colors.white,
+                      )),
+                ),
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
             backgroundColor: Color(0xFF2C3246),
             title: Text("Pengiriman", style: GoogleFonts.nunito())),
@@ -239,7 +283,7 @@ class AddressSendState extends State<AddressSend> {
                                 Text('Alamat Pengiriman',
                                     textAlign: TextAlign.left,
                                     style: GoogleFonts.nunito(
-                                        fontSize: 17,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.bold)),
                                 const SizedBox(
                                   height: 5,
@@ -248,7 +292,7 @@ class AddressSendState extends State<AddressSend> {
                                     ? Text('Pilih Alamat Pengiriman',
                                         textAlign: TextAlign.left,
                                         style: GoogleFonts.nunito(
-                                            fontSize: 12, color: Colors.red))
+                                            fontSize: 15, color: Colors.red))
                                     : Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -256,25 +300,25 @@ class AddressSendState extends State<AddressSend> {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(
-                                            addressList[idxAddress]['address']
-                                                .toString(),
-                                            textAlign: TextAlign.left,
-                                            style:GoogleFonts.nunito(fontSize: 12)
-                                          ),
+                                              addressList[idxAddress]['address']
+                                                  .toString(),
+                                              textAlign: TextAlign.left,
+                                              style: GoogleFonts.nunito(
+                                                  fontSize: 15)),
                                           Text(
-                                            addressList[idxAddress]
-                                                    ['postal_code']
-                                                .toString(),
-                                            textAlign: TextAlign.left,
-                                            style:GoogleFonts.nunito(fontSize: 12)
-                                          ),
+                                              addressList[idxAddress]
+                                                      ['postal_code']
+                                                  .toString(),
+                                              textAlign: TextAlign.left,
+                                              style: GoogleFonts.nunito(
+                                                  fontSize: 15)),
                                           Text(
-                                            addressList[idxAddress]
-                                                    ['description']
-                                                .toString(),
-                                            textAlign: TextAlign.left,
-                                            style:GoogleFonts.nunito(fontSize: 12)
-                                          ),
+                                              addressList[idxAddress]
+                                                      ['description']
+                                                  .toString(),
+                                              textAlign: TextAlign.left,
+                                              style: GoogleFonts.nunito(
+                                                  fontSize: 15)),
                                         ],
                                       ),
                               ],
@@ -287,7 +331,12 @@ class AddressSendState extends State<AddressSend> {
                                 onPressed: () {
                                   dialogAddress();
                                 },
-                                child:  Text("Pilih alamat lain", style: GoogleFonts.nunito())),
+                                child: Text("Pilih alamat lain",
+                                    style: GoogleFonts.nunito(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      decoration: TextDecoration.underline,
+                                    ))),
                           ))
                         ],
                       ),
@@ -323,8 +372,8 @@ class AddressSendState extends State<AddressSend> {
                                                       ['image']['path']
                                                   .toString()
                                               : 'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
-                                          width: 50,
-                                          height: 50),
+                                          width: 80,
+                                          height: 80),
                                       Container(
                                         width: windowWidth * 0.1,
                                         height: windowHeight * 0.1,
@@ -342,30 +391,37 @@ class AddressSendState extends State<AddressSend> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Text(
-                                                tempData.isNotEmpty
-                                                    ? tempData[i]['item_detail']
-                                                            ['name']
-                                                        .toString()
-                                                    : '',
-                                                textAlign: TextAlign.left,
-                                                style: GoogleFonts.nunito()
-                                              ),
-                                              Text(tempData.isNotEmpty
-                                                  ? tempData[i]['volume']
-                                                          .toString() +
-                                                      "paks"
-                                                  : '- paks', style: GoogleFonts.nunito()),
+                                                  tempData.isNotEmpty
+                                                      ? tempData[i][
+                                                                  'item_detail']
+                                                              ['name']
+                                                          .toString()
+                                                      : '',
+                                                  textAlign: TextAlign.left,
+                                                  style: GoogleFonts.nunito(
+                                                      fontSize: 18)),
+                                              Text(
+                                                  tempData.isNotEmpty
+                                                      ? tempData[i]['volume']
+                                                              .toString() +
+                                                          "paks"
+                                                      : '- paks',
+                                                  style: GoogleFonts.nunito(
+                                                      fontSize: 15)),
                                             ],
                                           ),
                                         ),
                                       ),
                                       Expanded(
                                           flex: 1,
-                                          child: Text(tempData.isNotEmpty
-                                              ? "Rp " +
-                                                  tempData[i]['price']
-                                                      .toString()
-                                              : "Rp -", style: GoogleFonts.nunito()))
+                                          child: Text(
+                                              tempData.isNotEmpty
+                                                  ? "Rp " +
+                                                      tempData[i]['price']
+                                                          .toString()
+                                                  : "Rp -",
+                                              style: GoogleFonts.nunito(
+                                                  fontSize: 15)))
                                     ],
                                   ),
                                 ),
@@ -375,48 +431,14 @@ class AddressSendState extends State<AddressSend> {
                       ],
                     )),
               ),
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Total', style: GoogleFonts.nunito(fontSize: 20)),
-                            Text('Rp ' + totalPrice.toString(),style: GoogleFonts.nunito(fontSize:20))
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          onPressed: () {
-                            changeAddress
-                                ? createItem()
-                                : alertError('Anda belum pilih alamat!', 0);
-                            ;
-                          },
-                          child:  Text('Bayar',
-                              style: GoogleFonts.nunito(fontSize:15)),
-                          color: Colors.blue,
-                          textColor: Colors.white,
-                          elevation: 5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ))
+              // Expanded(
+              //     child: Padding(
+              //   padding: const EdgeInsets.all(20.0),
+              //   child: Align(
+              //     alignment: Alignment.bottomCenter,
+              //     child:
+              //   ),
+              // ))
             ],
           ),
         ));

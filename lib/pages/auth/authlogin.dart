@@ -254,6 +254,7 @@ class AuthLoginPageState extends State<AuthLoginPage> {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
           child: Stack(
+            alignment: Alignment.center,
             children: [
               SizedBox(
                 width: double.infinity,
@@ -427,30 +428,30 @@ class AuthLoginPageState extends State<AuthLoginPage> {
                               height: 10,
                             ),
                             //login google
-                            Align(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16, top: 8, bottom: 8),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        // ignore: deprecated_member_use
-                                        FlatButton(
-                                            onPressed: _handleSignIn,
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        100.0),
-                                                child: Image.asset(
-                                                  'assets/images/logogoogle.png',
-                                                  width: 65,
-                                                  height: 65,
-                                                ))),
-                                      ])),
-                            ),
+                            // Align(
+                            //   alignment: Alignment.center,
+                            //   child: Padding(
+                            //       padding: const EdgeInsets.only(
+                            //           left: 16, right: 16, top: 8, bottom: 8),
+                            //       child: Column(
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.end,
+                            //           children: [
+                            //             // ignore: deprecated_member_use
+                            //             FlatButton(
+                            //                 onPressed: _handleSignIn,
+                            //                 padding: const EdgeInsets.all(0.0),
+                            //                 child: ClipRRect(
+                            //                     borderRadius:
+                            //                         BorderRadius.circular(
+                            //                             100.0),
+                            //                     child: Image.asset(
+                            //                       'assets/images/logogoogle.png',
+                            //                       width: 65,
+                            //                       height: 65,
+                            //                     ))),
+                            //           ])),
+                            // ),
                             const SizedBox(
                               height: 30,
                             ),

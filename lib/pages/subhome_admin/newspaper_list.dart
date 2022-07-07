@@ -521,251 +521,247 @@ class NewsPaperListState extends State<NewsPaperList> {
         ),
         context: context,
         builder: (context) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => Navigator.of(context).pop(),
-            child: DraggableScrollableSheet(
-                initialChildSize: 0.9,
-                maxChildSize: 0.9,
-                minChildSize: 0.5,
-                expand: false,
-                builder: (context, scrollController) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Container(
-                      padding: EdgeInsets.all(30),
-                      child: ListView(
-                        children: [
-                          SizedBox(
-                            height: 20,
+          return DraggableScrollableSheet(
+              initialChildSize: 0.9,
+              maxChildSize: 0.9,
+              minChildSize: 0.7,
+              expand: false,
+              builder: (context, scrollController) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    padding: EdgeInsets.all(30),
+                    child: ListView(
+                      children: [
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Align(
+                          alignment: const Alignment(0, 1),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 55,
+                                  child: Hero(
+                                      tag: "pp",
+                                      child: imageTemp != null
+                                          ? CircleAvatar(
+                                              backgroundColor: Colors.black38,
+                                              backgroundImage:
+                                                  MemoryImage(imageTemp!),
+                                              radius: 100.0,
+                                            )
+                                          : const CircleAvatar(
+                                              backgroundColor: Colors.black38,
+                                              backgroundImage: null,
+                                              radius: 100.0,
+                                            )))
+                            ],
                           ),
-                          Align(
-                            alignment: const Alignment(0, 1),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 55,
-                                    child: Hero(
-                                        tag: "pp",
-                                        child: imageTemp != null
-                                            ? CircleAvatar(
-                                                backgroundColor: Colors.black38,
-                                                backgroundImage:
-                                                    MemoryImage(imageTemp!),
-                                                radius: 100.0,
-                                              )
-                                            : const CircleAvatar(
-                                                backgroundColor: Colors.black38,
-                                                backgroundImage: null,
-                                                radius: 100.0,
-                                              )))
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            // ignore: sized_box_for_whitespace
-                            child: Container(
-                              alignment:Alignment.center,
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF2C3246),
-                                  onPrimary: Colors.white,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    addImage = true;
-                                  });
-                                  Navigator.pop(context);
-                                  popUpCamera();
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "Tambah",
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.nunito(
-                                              color: Colors.white,
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            controller: title,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                icon: Icon(Icons.label_important_rounded),
-                                labelText: "Judul Berita"),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            controller: author,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              icon: Icon(Icons.account_circle),
-                              labelText: "Penulis",
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.medical_services,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: DropdownButtonFormField<String>(
-                                    isExpanded: true,
-                                    items: optCategory
-                                        .map<DropdownMenuItem<String>>((items) {
-                                      return DropdownMenuItem(
-                                          value: items['val'].toString(),
-                                          child:
-                                              Text(items['name'].toString()));
-                                    }).toList(),
-                                    value: category,
-                                    onChanged: (val) => setState(() {
-                                      category = val.toString();
-                                    }),
-                                    onSaved: (val) => setState(() {
-                                      category = val.toString();
-                                    }),
-                                    hint: Text(
-                                      "Select Item",
-                                      style: GoogleFonts.nunito(
-                                          color: Colors.grey),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                    icon: const Padding(
-                                        //Icon at tail, arrow bottom is default icon
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.arrow_downward)),
-                                    style: TextStyle(
-                                      color: category == ""
-                                          ? Colors.grey[800]
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            textInputAction: TextInputAction.newline,
-                            maxLines: 5,
-                            keyboardType: TextInputType.multiline,
-                            controller: description,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              icon: Icon(Icons.details),
-                              labelText: "Deskripsi",
-                            ),
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextField(
-                            controller: source,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              icon: Icon(Icons.source),
-                              labelText: "Sumber",
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                          TextField(
-                            controller: link,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              icon: Icon(Icons.add_link),
-                              labelText: "Tautan",
-                            ),
-                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
                           // ignore: sized_box_for_whitespace
-                          SizedBox(height: 20),
-                          InkWell(
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF2C3246),
-                                borderRadius: BorderRadius.circular(10),
+                          child: Container(
+                            alignment:Alignment.center,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF2C3246),
+                                onPrimary: Colors.white,
                               ),
-                              child: Text(
-                                "Tambah Data",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.nunito(
-                                    color: Colors.white, fontSize: 20),
+                              onPressed: () {
+                                setState(() {
+                                  addImage = true;
+                                });
+                                Navigator.pop(context);
+                                popUpCamera();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: Container(
+                                  child: Row(
+                                    mainAxisAlignment:MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "Tambah",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.nunito(
+                                            color: Colors.white,
+                                            fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                            onTap: () => {
-                              imageTemp = null,
-                              createItem(),
-                              Navigator.pop(context),
-                            },
                           ),
-                          // DialogButton(
-                          //   color: HexColor("#2C3246"),
-                          //   onPressed: () => {
-                          //     createItem(),
-                          //     Navigator.pop(context),
-                          //   },
-                          //   child: const Text(
-                          //     "Tambah Data",
-                          //     style:
-                          //         TextStyle(color: Colors.white, fontSize: 20),
-                          //   ),
-                          // ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          controller: title,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              icon: Icon(Icons.label_important_rounded),
+                              labelText: "Judul Berita"),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          controller: author,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.account_circle),
+                            labelText: "Penulis",
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.medical_services,
+                                color: Colors.grey,
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: DropdownButtonFormField<String>(
+                                  isExpanded: true,
+                                  items: optCategory
+                                      .map<DropdownMenuItem<String>>((items) {
+                                    return DropdownMenuItem(
+                                        value: items['val'].toString(),
+                                        child:
+                                            Text(items['name'].toString()));
+                                  }).toList(),
+                                  value: category,
+                                  onChanged: (val) => setState(() {
+                                    category = val.toString();
+                                  }),
+                                  onSaved: (val) => setState(() {
+                                    category = val.toString();
+                                  }),
+                                  hint: Text(
+                                    "Select Item",
+                                    style: GoogleFonts.nunito(
+                                        color: Colors.grey),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                  icon: const Padding(
+                                      //Icon at tail, arrow bottom is default icon
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.arrow_downward)),
+                                  style: TextStyle(
+                                    color: category == ""
+                                        ? Colors.grey[800]
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          textInputAction: TextInputAction.newline,
+                          maxLines: 5,
+                          keyboardType: TextInputType.multiline,
+                          controller: description,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.details),
+                            labelText: "Deskripsi",
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        TextField(
+                          controller: source,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.source),
+                            labelText: "Sumber",
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        TextField(
+                          controller: link,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.add_link),
+                            labelText: "Tautan",
+                          ),
+                        ),
+                        // ignore: sized_box_for_whitespace
+                        SizedBox(height: 20),
+                        InkWell(
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Color(0xFF2C3246),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              "Tambah Data",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white, fontSize: 20),
+                            ),
+                          ),
+                          onTap: () => {
+                            imageTemp = null,
+                            createItem(),
+                            Navigator.pop(context),
+                          },
+                        ),
+                        // DialogButton(
+                        //   color: HexColor("#2C3246"),
+                        //   onPressed: () => {
+                        //     createItem(),
+                        //     Navigator.pop(context),
+                        //   },
+                        //   child: const Text(
+                        //     "Tambah Data",
+                        //     style:
+                        //         TextStyle(color: Colors.white, fontSize: 20),
+                        //   ),
+                        // ),
+                      ],
                     ),
-                  );
-                }),
-          );
+                  ),
+                );
+              });
         });
   }
 

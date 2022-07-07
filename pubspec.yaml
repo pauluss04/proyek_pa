@@ -37,8 +37,6 @@ dependencies:
   double_back_to_close: ^2.0.0
   double_back_to_close_app: ^2.0.1
   flutter_dotenv: ^5.0.2
-  firebase_core: ^1.8.0
-  firebase_database: ^8.0.1
   http: ^0.13.4
   google_sign_in: ^5.0.3
   rflutter_alert: ^2.0.4
@@ -62,6 +60,7 @@ dependencies:
   radio_player: ^0.4.3
   responsive_framework: ^0.1.9
   favorite_button: ^0.0.4
+  share_plus: ^4.0.10
 
 dev_dependencies:
   flutter_test:

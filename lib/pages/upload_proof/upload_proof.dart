@@ -369,8 +369,8 @@ class UploadProofState extends State<UploadProof> {
                               color: !isloading
                                   ? tempData['proof'] != null
                                       ? Colors.grey
-                                      : Colors.blue
-                                  : Colors.blue,
+                                      : Color(0xFF2C3246)
+                                  : Color(0xFF2C3246),
                               textColor: Colors.white,
                               elevation: 5,
                             ),

@@ -291,6 +291,7 @@ class MedicineAdminState extends State<MedicineAdmin> {
       edited = true;
     } else {
       if (!edited) {
+        tempData.clear();
         if (namaBarang.text == "") {
           namaBarang.text = "";
         }
@@ -324,312 +325,302 @@ class MedicineAdminState extends State<MedicineAdmin> {
         ),
         context: context,
         builder: (context) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => Navigator.of(context).pop(),
-            child: DraggableScrollableSheet(
-                initialChildSize: 0.9,
-                maxChildSize: 0.9,
-                minChildSize: 0.5,
-                expand: false,
-                builder: (context, scrollController) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: Container(
-                      padding: EdgeInsets.all(40),
-                      child: ListView(
-                        children: <Widget>[
-                          SizedBox(
-                            height: 20,
+          return DraggableScrollableSheet(
+              initialChildSize: 0.9,
+              maxChildSize: 0.9,
+              minChildSize: 0.7,
+              expand: false,
+              builder: (context, scrollController) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: Container(
+                    padding: EdgeInsets.all(40),
+                    child: ListView(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Align(
+                          alignment: const Alignment(0, 1),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 55,
+                                  child: Hero(
+                                    tag: "pp",
+                                    child: imageTemp != null
+                                        ? CircleAvatar(
+                                            backgroundColor: Colors.black38,
+                                            backgroundImage:
+                                                MemoryImage(imageTemp!),
+                                            radius: 100.0,
+                                          )
+                                        : edited
+                                            ? Image.network(
+                                                tempData[id]['image']['path']
+                                                    .toString(),
+                                                width: 200)
+                                            : const CircleAvatar(
+                                                backgroundColor: Colors.black38,
+                                                backgroundImage: null,
+                                                radius: 100.0,
+                                              ),
+                                  )),
+                            ],
                           ),
-                          Align(
-                            alignment: const Alignment(0, 1),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 55,
-                                    child: Hero(
-                                      tag: "pp",
-                                      child: imageTemp != null
-                                          ? CircleAvatar(
-                                              backgroundColor: Colors.black38,
-                                              backgroundImage:
-                                                  MemoryImage(imageTemp!),
-                                              radius: 100.0,
-                                            )
-                                          : edited
-                                              ? Image.network(
-                                                  tempData[id]['image']['path']
-                                                      .toString(),
-                                                  width: 200)
-                                              : const CircleAvatar(
-                                                  backgroundColor:
-                                                      Colors.black38,
-                                                  backgroundImage: null,
-                                                  radius: 100.0,
-                                                ),
-                                    )),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            // ignore: sized_box_for_whitespace
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF2C3246),
-                                  onPrimary: Colors.white,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    // if (typeAlert == "Edit") {
-                                      edited = true;
-                                    // } else {
-                                    //   edited = false;
-                                    // }
-                                  });
-
-                                  Navigator.pop(context);
-                                  popUpCamera();
-                                },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          // ignore: sized_box_for_whitespace
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF2C3246),
+                                onPrimary: Colors.white,
+                              ),
+                              onPressed: () {
+                                // if (typeAlert == "Edit") {
+                                  edited = true;
+                                // } else {
+                                //   edited = false;
+                                // }
+                                Navigator.pop(context);
+                                popUpCamera();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
                                 child: Container(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    child: Row(
-                                      children:  <Widget>[
-                                        Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.white,
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "Tambah",
-                                          textAlign: TextAlign.center,
-                                          style: GoogleFonts.nunito(
-                                              color: Colors.white,
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "Tambah",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.nunito(
+                                            color: Colors.white, fontSize: 15),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            controller: namaBarang,
-                            keyboardType: TextInputType.text,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                icon: Icon(Icons.production_quantity_limits),
-                                labelText: "Nama Barang"),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            controller: hargaBarang,
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          controller: namaBarang,
+                          keyboardType: TextInputType.text,
+                          decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              icon: Icon(Icons.monetization_on),
-                              labelText: "Harga barang",
-                            ),
+                              icon: Icon(Icons.production_quantity_limits),
+                              labelText: "Nama Barang"),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          controller: hargaBarang,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.monetization_on),
+                            labelText: "Harga barang",
                           ),
-                          SizedBox(
-                            height: 20,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          keyboardType: TextInputType.number,
+                          controller: stock,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.confirmation_number),
+                            labelText: "Stock",
                           ),
-                          TextField(
-                            keyboardType: TextInputType.number,
-                            controller: stock,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              icon: Icon(Icons.confirmation_number),
-                              labelText: "Stock",
-                            ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.ac_unit,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: DropdownButtonFormField<String>(
+                                  isExpanded: true,
+                                  items: list_unit
+                                      .map<DropdownMenuItem<String>>((items) {
+                                    return DropdownMenuItem(
+                                        value: items['id'].toString(),
+                                        child: Text(items['name']));
+                                  }).toList(),
+                                  value: unitChoose,
+                                  onChanged: (val) => setState(() {
+                                    unitChoose = val.toString();
+                                  }),
+                                  onSaved: (val) => setState(() {
+                                    unitChoose = val.toString();
+                                  }),
+                                  hint: Text(
+                                    "Select Item",
+                                    style: TextStyle(color: Colors.grey),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                  icon: Padding(
+                                      //Icon at tail, arrow bottom is default icon
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.arrow_downward)),
+                                  style: TextStyle(
+                                    color: unitChoose == ""
+                                        ? Colors.grey[800]
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 20,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.medical_services,
+                                color: Colors.grey,
+                              ),
+                              SizedBox(
+                                width: 15,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: DropdownButtonFormField<String>(
+                                  isExpanded: true,
+                                  items: apotekList
+                                      .map<DropdownMenuItem<String>>((items) {
+                                    return DropdownMenuItem(
+                                        value: items['id'].toString(),
+                                        child: Text(items['name']));
+                                  }).toList(),
+                                  value: selectApotek,
+                                  onChanged: (val) => setState(() {
+                                    selectApotek = val.toString();
+                                  }),
+                                  onSaved: (val) => setState(() {
+                                    selectApotek = val.toString();
+                                  }),
+                                  hint: Text(
+                                    "Select Item",
+                                    style: TextStyle(color: Colors.grey),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                  icon: Padding(
+                                      //Icon at tail, arrow bottom is default icon
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.arrow_downward)),
+                                  style: TextStyle(
+                                    color: selectApotek == ""
+                                        ? Colors.grey[800]
+                                        : Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextField(
+                          textInputAction: TextInputAction.newline,
+                          maxLines: 5,
+                          keyboardType: TextInputType.multiline,
+                          controller: deskipsi,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.description),
+                            labelText: "Deskrispi",
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 40,
                             width: double.infinity,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.ac_unit,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: DropdownButtonFormField<String>(
-                                    isExpanded: true,
-                                    items: list_unit
-                                        .map<DropdownMenuItem<String>>((items) {
-                                      return DropdownMenuItem(
-                                          value: items['id'].toString(),
-                                          child: Text(items['name']));
-                                    }).toList(),
-                                    value: unitChoose,
-                                    onChanged: (val) => setState(() {
-                                      unitChoose = val.toString();
-                                    }),
-                                    onSaved: (val) => setState(() {
-                                      unitChoose = val.toString();
-                                    }),
-                                    hint: Text(
-                                      "Select Item",
-                                      style: TextStyle(color: Colors.grey),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                    icon: Padding(
-                                        //Icon at tail, arrow bottom is default icon
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.arrow_downward)),
-                                    style: TextStyle(
-                                      color: unitChoose == ""
-                                          ? Colors.grey[800]
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            decoration: BoxDecoration(
+                              color: Color(0xFF2C3246),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            width: double.infinity,
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.medical_services,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: DropdownButtonFormField<String>(
-                                    isExpanded: true,
-                                    items: apotekList
-                                        .map<DropdownMenuItem<String>>((items) {
-                                      return DropdownMenuItem(
-                                          value: items['id'].toString(),
-                                          child: Text(items['name']));
-                                    }).toList(),
-                                    value: selectApotek,
-                                    onChanged: (val) => setState(() {
-                                      selectApotek = val.toString();
-                                    }),
-                                    onSaved: (val) => setState(() {
-                                      selectApotek = val.toString();
-                                    }),
-                                    hint: Text(
-                                      "Select Item",
-                                      style: TextStyle(color: Colors.grey),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                    icon: Padding(
-                                        //Icon at tail, arrow bottom is default icon
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.arrow_downward)),
-                                    style: TextStyle(
-                                      color: selectApotek == ""
-                                          ? Colors.grey[800]
-                                          : Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextField(
-                            textInputAction: TextInputAction.newline,
-                            maxLines: 5,
-                            keyboardType: TextInputType.multiline,
-                            controller: deskipsi,
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              icon: Icon(Icons.description),
-                              labelText: "Deskrispi",
-                            ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          InkWell(
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF2C3246),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                typeAlert == "Edit"
-                                    ? "Simpan Data"
-                                    : "Tambah Data",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              ),
-                            ),
-                            onTap: () => {
-                              imageTemp = null,
+                            child: Text(
                               typeAlert == "Edit"
-                                  ? updateItem(idUpdate.toString())
-                                  : createItem(),
-                              Navigator.pop(context),
-                            },
+                                  ? "Simpan Data"
+                                  : "Tambah Data",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.nunito(
+                                  color: Colors.white, fontSize: 20),
+                            ),
                           ),
-                          // DialogButton(
-                          //   color: HexColor("#2C3246"),
-                          //   onPressed: () => {
-                          //     typeAlert == "Edit"
-                          //         ? updateItem(idUpdate.toString())
-                          //         : createItem(),
-                          //     Navigator.pop(context),
-                          //   },
-                          //   child: Text(
-                          //     typeAlert == "Edit" ? "Simpan Data" : "Tambah Data",
-                          //     style: const TextStyle(
-                          //         color: Colors.white, fontSize: 20),
-                          //   ),
-                          // ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                        ],
-                      ),
+                          onTap: () => {
+                            typeAlert == "Edit"
+                                ? updateItem(idUpdate.toString())
+                                : createItem(),
+                            Navigator.pop(context),
+                          },
+                        ),
+                        // DialogButton(
+                        //   color: HexColor("#2C3246"),
+                        //   onPressed: () => {
+                        //     typeAlert == "Edit"
+                        //         ? updateItem(idUpdate.toString())
+                        //         : createItem(),
+                        //     Navigator.pop(context),
+                        //   },
+                        //   child: Text(
+                        //     typeAlert == "Edit" ? "Simpan Data" : "Tambah Data",
+                        //     style: const TextStyle(
+                        //         color: Colors.white, fontSize: 20),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
                     ),
-                  );
-                }),
-          );
+                  ),
+                );
+              });
         });
-
-  
   }
 
   @override
@@ -656,7 +647,7 @@ class MedicineAdminState extends State<MedicineAdmin> {
                 onPressed: () => Navigator.of(context).pop(),
                 icon: (Icon(Icons.arrow_back, color: Colors.white))),
             backgroundColor: Color(0xFF2C3246),
-            title:  Text("Obat Herbal", style: GoogleFonts.nunito()),
+            title: Text("Obat Herbal", style: GoogleFonts.nunito()),
           ),
           body: SafeArea(
             bottom: false,
@@ -742,12 +733,12 @@ class MedicineAdminState extends State<MedicineAdmin> {
                                                             .toString(),
                                                         width: 200,
                                                         errorBuilder: (context,
-                                                        error, stackTrace) {
-                                                      return Image.network(
-                                                        'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
-                                                        width: 70,
-                                                      );
-                                                    },
+                                                            error, stackTrace) {
+                                                          return Image.network(
+                                                            'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
+                                                            width: 70,
+                                                          );
+                                                        },
                                                       ),
                                                     ),
                                                     Expanded(
@@ -765,7 +756,7 @@ class MedicineAdminState extends State<MedicineAdmin> {
                                                               textAlign:
                                                                   TextAlign
                                                                       .start,
-                                                              style:  GoogleFonts.nunito(
+                                                              style: GoogleFonts.nunito(
                                                                   color: Colors
                                                                       .black,
                                                                   fontSize: 12,
@@ -791,7 +782,7 @@ class MedicineAdminState extends State<MedicineAdmin> {
                                                               textAlign:
                                                                   TextAlign
                                                                       .start,
-                                                              style:  GoogleFonts.nunito(
+                                                              style: GoogleFonts.nunito(
                                                                   color: Colors
                                                                       .black,
                                                                   fontSize: 12,
@@ -815,7 +806,8 @@ class MedicineAdminState extends State<MedicineAdmin> {
                                                             ),
                                                             style: ElevatedButton
                                                                 .styleFrom(
-                                                                    primary:Color(0xFF2C3246),
+                                                                    primary: Color(
+                                                                        0xFF2C3246),
                                                                     onPrimary:
                                                                         Colors
                                                                             .white,
@@ -849,7 +841,8 @@ class MedicineAdminState extends State<MedicineAdmin> {
                                                             ),
                                                             style: ElevatedButton
                                                                 .styleFrom(
-                                                                    primary:Color(0xFF2C3246),
+                                                                    primary: Color(
+                                                                        0xFF2C3246),
                                                                     onPrimary:
                                                                         Colors
                                                                             .white,

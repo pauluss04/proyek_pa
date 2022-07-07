@@ -68,6 +68,13 @@ class ListFavoriteState extends State<ListFavorite> {
             btnOkColor: Colors.red)
         .show();
   }
+  
+  deleteCart(index) async {
+    setState(() {
+      tempData.removeAt(index);
+    });
+    await getItem();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +95,14 @@ class ListFavoriteState extends State<ListFavorite> {
                   Container(
                     margin: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      color: Colors.black12,
-                    ),
+                        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 3.0,
+                          ),
+                        ]),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 15, horizontal: 15),
@@ -104,18 +116,22 @@ class ListFavoriteState extends State<ListFavorite> {
                                     ? Image.network(
                                         tempData[i]['likeable']['image']['path']
                                             .toString(),
-                                        width: 50,
-                                        height: 50)
+                                        width: 80,
+                                        height: 80)
                                     : tempData[i]['likeable_type'] ==
                                             "App\\Models\\News"
-                                        ? const Icon(
-                                            Icons.library_books_outlined,
-                                            size: 50,
-                                          )
-                                        : const Icon(
-                                            Icons.radio,
-                                            size: 50,
-                                          )
+                                        ? Image.network(
+                                            tempData[i]['likeable']['image']
+                                                    ['path']
+                                                .toString(),
+                                            width: 80,
+                                            height: 80)
+                                        : Image.network(
+                                            tempData[i]['likeable']['image']
+                                                    ['path']
+                                                .toString(),
+                                            width: 80,
+                                            height: 80)
                                 : const Text(''),
                             Expanded(
                               flex: 3,
@@ -153,6 +169,11 @@ class ListFavoriteState extends State<ListFavorite> {
                                 ),
                               ),
                             ),
+                            IconButton(
+                              onPressed: (){
+                                print(tempData[0]['likeable']);
+                              },
+                              icon: Icon(Icons.delete, size:30))
                           ],
                         ),
                       ),

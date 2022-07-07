@@ -190,9 +190,10 @@ class ListCartState extends State<ListCart> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         bottomNavigationBar: Container(
+          color: Colors.transparent,
           alignment: Alignment.bottomCenter,
-          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-          height: 60,
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 10),
+          height: 70,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -211,16 +212,21 @@ class ListCartState extends State<ListCart> {
               ),
               Expanded(
                 flex: 1,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5,
+                    primary: Color(0xFF2C3246),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
                   onPressed: () {
                     nextChooseAddress();
                   },
-                  child: Text('Beli', style: GoogleFonts.nunito(fontSize: 15)),
-                  color: Color(0xFF2C3246),
-                  textColor: Colors.white,
-                  elevation: 5,
+                  child: Text(
+                    'Beli',
+                    style:
+                        GoogleFonts.nunito(fontSize: 20, color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -291,8 +297,8 @@ class ListCartState extends State<ListCart> {
                                                                 'image']['path']
                                                             .toString()
                                                         : 'https://t4.ftcdn.net/jpg/00/89/55/15/360_F_89551596_LdHAZRwz3i4EM4J0NHNHy2hEUYDfXc0j.jpg',
-                                                    width: 50,
-                                                    height: 50),
+                                                    width: 80,
+                                                    height: 80),
                                                 Container(
                                                   width: windowWidth * 0.1,
                                                   height: windowHeight * 0.1,
@@ -322,7 +328,9 @@ class ListCartState extends State<ListCart> {
                                                             textAlign:
                                                                 TextAlign.left,
                                                             style: GoogleFonts
-                                                                .nunito()),
+                                                                .nunito(
+                                                                    fontSize:
+                                                                        18)),
                                                         Row(
                                                           children: [
                                                             Text(
@@ -334,7 +342,9 @@ class ListCartState extends State<ListCart> {
                                                                             .toString()
                                                                     : '',
                                                                 style: GoogleFonts
-                                                                    .nunito())
+                                                                    .nunito(
+                                                                        fontSize:
+                                                                            15))
                                                           ],
                                                         )
                                                       ],
@@ -350,8 +360,9 @@ class ListCartState extends State<ListCart> {
                                                                         'price']
                                                                     .toString()
                                                             : "Rp -",
-                                                        style: GoogleFonts
-                                                            .nunito())),
+                                                        style:
+                                                            GoogleFonts.nunito(
+                                                                fontSize: 15))),
                                                 IconButton(
                                                   onPressed: () {
                                                     deleteCart(i);

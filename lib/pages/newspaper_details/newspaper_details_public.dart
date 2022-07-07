@@ -9,6 +9,7 @@ import 'package:flutter_share/flutter_share.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:herbal/api/api_services.dart';
 import 'package:herbal/pages/auth/authlogin.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -87,7 +88,7 @@ class NewspaperDetailsPublicState extends State<NewspaperDetailsPublic> {
       }
     }).catchError((e) {
       print("error6");
-      alertError(e.toString(), 1);
+      alertNotLogin();
     });
   }
 
@@ -123,6 +124,25 @@ class NewspaperDetailsPublicState extends State<NewspaperDetailsPublic> {
         .show();
   }
 
+  alertNotLogin() {
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.ERROR,
+      animType: AnimType.SCALE,
+      headerAnimationLoop: false,
+      title: 'Kesalahan',
+      desc: "Anda Belum Login. Silahkan Login terlebih dahulu",
+      btnOkOnPress: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AuthLoginPage()));
+      },
+      btnOkIcon: Icons.cancel,
+      btnOkColor: Colors.red)
+  .show();
+  }
+
   getCustomFormattedDateTime(String givenDateTime, String dateFormat) {
     final DateTime docDateTime = DateTime.parse(givenDateTime).toLocal();
     return DateFormat(dateFormat, 'id').format(docDateTime);
@@ -147,56 +167,30 @@ class NewspaperDetailsPublicState extends State<NewspaperDetailsPublic> {
           backgroundColor: Color(0xFF2C3246),
           title: Text("Detail Berita", style: GoogleFonts.nunito(fontSize: 25)),
           actions: [
-            for (int indext = 0; indext < dataNews.length; indext++)
+            // for (int indext = 0; indext < dataNews.length; indext++)
+              
               FavoriteButton(
                 iconSize: 50,
-                isFavorite: false,
+                isFavorite: dataNews[0]['has_like'],
                 valueChanged: (value){
                   value = likeManagement(
-                      dataNews[indext]['id'], dataNews[indext]['has_like']);
+                      dataNews[0]['id'], dataNews[0]['has_like']);
                   print('Is Favorite : $value');
               },),
-              // LikeButton(
-              //   onTap: onLikeButtonTapped,
-              //   likeBuilder: (isLiked) {
-              //     return Icon(
-              //       Icons.home,
-              //       color: isLiked ? Colors.red : Colors.grey,
-              //     );
-              //   },
-              // ),
-            // IconButton(
-            //   iconSize: 30,
-            //   icon: Icon(
-            //     dataNews[indext]['has_like']
-            //         ? Icons.favorite
-            //         : Icons.favorite_border,
-            //     color: dataNews[indext]['has_like'] ? Colors.red : Colors.white,
-            //   ),
-            //   onPressed: () {
-            //     setState(() {
-            //       // print(likeManagement(dataNews[i]['id'],
-            //       //     dataNews[i]['has_like']));
-            //       likeManagement(
-            //           dataNews[indext]['id'], dataNews[indext]['has_like']);
-            //     });
-            //   },
-            // ),
+              SizedBox(width: 8,),
             IconButton(
               iconSize: 30,
               icon: const Icon(Icons.share),
-              onPressed: () {
-                // share();
-                setState(() async {
-                  await FlutterShare.share(
+              onPressed: () async{
+                await FlutterShare.share(
                       title: dataNews[0]['title'],
-                      text: dataNews[0]['description'] +
-                          "\n \n Untuk lebih lengkapnya bisa download aplikasi BSK Media di link ",
-                      linkUrl: 'https://flutter.dev/',
-                      chooserTitle: 'aaaaaa');
-                });
+                      text:"\n\n"+dataNews[0]['description'] +
+                          "\n \n Untuk lebih lengkapnya bisa download aplikasi BSK Media App di link ",
+                      linkUrl: 'https://bit.ly/3njyXRj',
+                      chooserTitle: 'BSK Media App');
               },
             ),
+            SizedBox(width: 3,),
           ],
         ),
         body: SafeArea(

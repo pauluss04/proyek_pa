@@ -33,6 +33,7 @@ class HomePublicPageState extends State<HomePublicPage> {
     return Scaffold(
         bottomNavigationBar: 
         BottomNavyBar(
+          key: Key('navBarUser'),
           containerHeight: 60,
           iconSize: 30,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -50,7 +51,7 @@ class HomePublicPageState extends State<HomePublicPage> {
               textAlign: TextAlign.center,
             ),
             BottomNavyBarItem(
-              icon: const Icon(Icons.my_library_books, key: Key("berita"),),
+              icon: const Icon(Icons.my_library_books, key: Key("beritaUser"),),
               title: Text('Berita', style: GoogleFonts.nunito(fontSize: 18)),
               activeColor: Colors.white,
               textAlign: TextAlign.center,

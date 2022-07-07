@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,27 +12,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages//auth/authlogin.dart';
 
-Future<void> main() async {
-//   Directory tempDir = await getTemporaryDirectory();
-// String tempPath = tempDir.path;
-
-// Directory appDocDir = await getApplicationDocumentsDirectory();
-// String appDocPath = appDocDir.path;
-  // String isRoleAdmin = 'users';
-  // await dotenv.load();
-  // await Firebase.initializeApp();
-  // final prefs = await SharedPreferences.getInstance();
-  // if (prefs.getString('role') != null) {
-  //   isRoleAdmin = prefs.getString('role')!;
-  // }
-
-  // SystemChrome.setPreferredOrientations([
-  //   DeviceOrientation.portraitUp,
-  // ]);
+main() async {
   runApp(MyApp());
   // runApp(const MyApp());
-
-  
 }
 class MyApp extends StatelessWidget {
   const MyApp({ Key? key }) : super(key: key);
